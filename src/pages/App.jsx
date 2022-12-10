@@ -14,24 +14,29 @@ export const App = () => {
   const [repos, setRepos] = useState([]);
 
   const handleSearchRepo = async () => {
+
     const { data } = await api.get(`repos/${currentRepo}`)
+
     if (data.id) {
+
       const isExist = repos.find(repo => repo.id === data.id);
+
       if (!isExist) {
-        setRepos(prev => [...prev, data])
-        setCurrentRepo('');
+        setRepos(prev => [...prev, data]);
+        setCurrentRepo('')
         return
       }
+
     }
-    alert("Nao Encontrado!");
+    alert('Repositório não encontrado')
+
   }
 
   const handleRemoveRepo = (id) => {
-    console.log(id)
-    // const isExist = repos.find(repos => repos.id === id);
-    // if (isExist) {
-    //   repos.splice(repos.id)
-    // }
+    const isExist = repos.find(repos => repos.id === id);
+    if (isExist) {
+      repos.splice(repos.id)
+    }
   }
 
   return (
@@ -39,7 +44,7 @@ export const App = () => {
       <img src={logo} alt="github logo" width={72} height={72} />
       <Input value={currentRepo} onChange={(e) => setCurrentRepo(e.target.value)} />
       <Button onClick={handleSearchRepo} />
-      {repos.map(repo => <ItemRepo removeRepo={handleRemoveRepo} repo={repo} />)}
+      {repos.map(repo => <ItemRepo handleRemoveRepo={handleRemoveRepo} repo={repo} key={repo.id} />)}
     </Container>
   );
 }
